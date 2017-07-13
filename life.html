@@ -1,0 +1,421 @@
+
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style>
+.finger-onDiv {cursor: pointer; cursor: hand;}
+
+#msgg {font-size: 18pt}
+</style>
+</head>
+<body style="font-family:Arial,helvetica,sans-serif;font-size:12pt; background-color:#EEEEEE">
+<div id='mydiv'>&nbsp;</div>
+<script>
+
+var ptog=0;
+var prng;
+var timer2;
+var cols;
+var rows;
+var backprop;
+var celife;
+var xmltable;
+var cells;
+var reinit;
+var tmval;
+var tstep;
+
+function init_game()
+{
+tstep=0;
+tmval=501;
+prng;
+timer2;
+cols=32;
+rows=16;
+backprop=new Array(0,1,2,3,4,5,6,7);
+celife=new Array(rows*cols);
+//xmltable = new ActiveXObject("Microsoft.XMLDOM");
+//xmltable = document.createElement("mydiv");
+//xmltable = document.documentElement;
+//xmltable = document.createElement.bind(document);
+//var div = document.createElement('div');
+xmltable = document.getElementById("mydiv");
+//xmltable = xmlDom;
+//xmltable.async="false";
+cells=document.createElement("cells");
+xmltable.appendChild(cells);
+reinit=0;
+}
+
+function rnd_populate_grid(rows,cols)
+{
+for(var lo1=0;lo1<rows;lo1++)
+	{
+		for(var lo2=0;lo2<cols;lo2++)
+		{
+			prng=Math.round(Math.random());
+
+			newCell = document.createElement("cell");
+
+
+			newCell.setAttribute("val",prng);
+      xmltable.appendChild(newCell);
+			//xmltable.documentElement.appendChild(newCell);
+
+		}
+	}
+	cells=xmltable.getElementsByTagName("cell");
+}
+function re_rnd_populate_grid()
+{
+
+	document.all.msgg.innerHTML="Randomising";
+for(var lo1=0;lo1<rows*cols;lo1++)
+	{
+
+			prng=Math.round(Math.random());
+
+
+			cells.item(lo1).setAttribute("val",prng);
+
+			//if (prng==0)
+			//{
+			//myStr="document.all.i"+lo1+"d.style.backgroundColor='';";
+			//		eval(myStr);
+			//}
+			//else
+			//{
+			//myStr="document.all.i"+lo1+"d.style.backgroundColor='#00ccff';";
+			//		eval(myStr);
+			//}
+
+
+	}
+tableStep();
+	document.all.msgg.innerHTML="Evolving";
+}
+
+function display_grid()
+{
+	var poi=0;
+
+	document.write("<table border = '0' cellpadding='0' cellspacing='0' align ='center' width='100%' ><tr align='center'><td>");
+		document.write("<table border = '0' cellpadding='0' cellspacing='0' width='100%'><tr align='center'><td nowrap bgcolor=#336699><div id='msgg'>Evolving.</div></td></tr></table>");
+	document.write("</td></tr>");
+	document.write("<tr><td>");
+
+
+			document.write("<table border = '3' cellpadding='0' cellspacing='0' align='center'><tr>");
+
+        document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+        document.write("onmouseover=\"this.className='hover'\"");
+        document.write("onmouseup=\"this.className='hover'\"");
+        document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+              document.write("<div class='finger-onDiv' id='PauseButton' onClick='tablePause();'>&nbsp;Pause&nbsp;</div></td>");
+
+				document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			        document.write("<div class='finger-onDiv' onClick='re_rnd_populate_grid();'>&nbsp;Randomise&nbsp;</div></td>");
+
+				document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			        document.write("<div class='finger-onDiv' onClick='tableClear();'>&nbsp;Clear&nbsp;</div></td>");
+
+			        document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			        document.write("<div class='finger-onDiv' onClick='tableFill();'>&nbsp;Fill&nbsp;</div></td>");
+
+				document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			        document.write("<div class='finger-onDiv' onClick='tableSlow();'>&nbsp;Slower&nbsp;</div>");
+				document.write("</td>");
+
+				document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			    document.write("<div class='finger-onDiv' onClick='tableFast();'>&nbsp;Faster&nbsp;</div>");
+				document.write("</td>");
+
+				document.write("<TD class=notsel onmousedown=\"this.className='selected'\"");
+				document.write("onmouseover=\"this.className='hover'\"");
+				document.write("onmouseup=\"this.className='hover'\"");
+				document.write("onmouseout=\"this.className='notsel'\" bgColor=#cdddfc>");
+			    document.write("<div class='finger-onDiv' onClick='tableStep();'>&nbsp;Step&nbsp;</div>");
+				document.write("</td>");
+
+				//document.write("<td width='100%'><div id='msg2'>&nbsp;</div></td></tr></table>");
+				document.write("</tr></table>");
+
+	document.write("</td></tr><tr><td>");
+			document.write("<table border = '0' cellpadding='0' cellspacing='0' width ='100%' style=\"cursor:hand\">");
+			for(var asd=0;asd<rows;asd++)
+				{
+					document.write("<tr>");
+					for(var dsa=0;dsa<cols;dsa++)
+						{
+
+							if (Number(cells.item(poi).getAttribute("val"))==0)
+							{
+								document.write("<td><div onclick='togglecell("+poi+");' id='i"+poi+"d' alt='Revive Cell'>");
+								document.write("<img width='100%' height='100%' src='images/spacer.gif' >&nbsp;</img>");
+								poi++;
+								document.write("</div></td>");
+							}
+							else
+							{
+								document.write("<td><div onclick='togglecell("+poi+");' id='i"+poi+"d' alt='Kill Cell'>");
+								document.write("<img width='100%' height='100%' src='images/spacer.gif'>&nbsp;</img>");
+								poi++;
+								document.write("</div></td>");
+
+							}
+						}
+					document.write("</tr>");
+				}
+			poi=0;
+
+			document.write("</table>");
+	document.write("</td></tr></table>");
+
+
+}
+
+function tableFast()
+{if (tmval>100)tmval-=100;
+document.all.msgg.innerHTML="Paused with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[6];
+}
+
+function tableSlow()
+{tmval+=100;
+document.all.msgg.innerHTML="Paused with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[6];
+}
+
+function tableStep()
+{
+tstep=1;
+Evolve();
+document.all.msgg.innerHTML="Paused with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[6];
+tstep=0;
+}
+
+function togglecell(cellno)
+{
+
+	var myStr;
+	if (cells.item(cellno).getAttribute("val")==0)
+	{
+		cells.item(cellno).setAttribute("val",1);
+		myStr="document.all.i"+cellno+"d.style.backgroundColor='#ffff00';"
+		liveones++;
+		document.all.msgg.innerHTML="Paused with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[7];
+
+		eval(myStr);
+	}
+	else
+	{
+		cells.item(cellno).setAttribute("val",0);
+		myStr="document.all.i"+cellno+"d.style.backgroundColor='';"
+		liveones--;
+		document.all.msgg.innerHTML="Paused with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[7];
+		eval(myStr);
+	}
+}
+
+function tablePause()
+{
+	if(ptog==0)
+	{
+		clearTimeout(timer2);
+				document.all.msgg.innerHTML="Paused while with speed set @"+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[7];
+		ptog=1;
+    document.all.PauseButton.innerHTML="Restart";
+
+
+	}
+	else
+	{
+		timer2=setTimeout("Evolve()",tmval);
+		document.all.msgg.innerHTML="Evolving @ speed "+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+backprop[7];
+		ptog=0;
+    document.all.PauseButton.innerHTML="Pause";
+	}
+}
+
+
+function tableFill()
+{
+	var jkl;
+
+for(jkl=0;jkl<rows*cols;jkl++)
+	{
+		cells.item(jkl).setAttribute("val",1);
+		myStr="document.all.i"+jkl+"d.style.backgroundColor='#000000';"
+		eval(myStr);
+	}
+}
+
+
+function tableClear()
+{
+	var jkl;
+for(jkl=0;jkl<rows*cols;jkl++)
+{
+	cells.item(jkl).setAttribute("val",0);
+	myStr="document.all.i"+jkl+"d.style.backgroundColor='#ffffff';"
+	eval(myStr);
+}
+}
+function Evolve()
+{
+	var myStr;
+	var innerbackprop=0;
+	var ghj=0;
+	var above,left,leftup,leftbelow,right,upright,belowright,below,dsa,asd;
+
+	if(reinit==2)alert("here");
+	for(asd=0;asd<rows;asd++)
+		{
+			for(dsa=0;dsa<cols;dsa++)
+				{
+				if (asd==0){above=(cols*rows-1)-cols+dsa+1;}else{above=ghj-cols;}
+				if (dsa==0){aboveleft=above+cols-1;}else{aboveleft=above-1;}
+				if (dsa==cols-1){aboveright=above-cols+1;}else{aboveright=above+1;}
+
+				if (dsa==0){left=ghj+cols-1;}else{left=ghj-1;}
+				if (dsa==cols-1){right=ghj-cols+1}else{right=ghj+1;}
+
+				if (asd==rows-1){below=dsa;}else{below=ghj+cols;}
+				if (dsa==0){leftbelow=below+cols-1;}else{leftbelow=below-1;}
+				if (dsa==cols-1){belowright=(below-cols+1);}else{belowright=below+1;}
+
+				celife[ghj]=
+				Number(cells.item(above).getAttribute("val"))+
+				Number(cells.item(aboveleft).getAttribute("val"))+
+				Number(cells.item(aboveright).getAttribute("val"))+
+				Number(cells.item(left).getAttribute("val"))+
+				Number(cells.item(right).getAttribute("val"))+
+				Number(cells.item(leftbelow).getAttribute("val"))+
+				Number(cells.item(below).getAttribute("val"))+
+				Number(cells.item(belowright).getAttribute("val"));
+
+
+
+				ghj++;
+				}
+		}
+		ghj=0;
+
+		liveones=0;
+		for(wer=0;wer<rows*cols;wer++)
+		{
+			if(cells.item(wer).getAttribute("val")==1)
+			{
+				if(celife[wer]==(2||3))
+				{
+					if(celife[wer]==(2))
+					{
+					cells.item(wer).setAttribute("val",1);
+					myStr="document.all.i"+wer+"d.style.backgroundColor='#00ffff';";
+					eval(myStr);
+					liveones++;
+					}
+					else
+					{
+					cells.item(wer).setAttribute("val",1);
+					myStr="document.all.i"+wer+"d.style.backgroundColor='#0000ff';";
+					eval(myStr);
+					liveones++;
+					}
+
+				}
+				else
+				{
+					cells.item(wer).setAttribute("val",0);
+					myStr="document.all.i"+wer+"d.style.backgroundColor='';";
+					eval(myStr);
+					//myStr="document.all.i"+wer+"d.innerHTML='&nbsp;&nbsp;&nbsp;';";
+					//eval(myStr);
+				}
+		        }
+		        if(cells.item(wer).getAttribute("val")==0)
+			{
+				if(celife[wer]==3)
+				{
+					cells.item(wer).setAttribute("val",1);
+					myStr="document.all.i"+wer+"d.style.backgroundColor='#00cc00';";
+					eval(myStr);
+					liveones++;
+				}
+			}
+			innerbackprop+=celife[wer];
+		}
+
+		//document.all.msgg.innerHTML="Client evolution.<br>"+backprop[0]+":"+backprop[1]+":"+backprop[2]+":"+backprop[3]+":"+backprop[4]+":"+backprop[5]+":"+backprop[6]+":"+backprop[7];
+
+		if((innerbackprop==backprop[0])&&(innerbackprop==backprop[1])&&(innerbackprop==backprop[2])&&(innerbackprop==backprop[3])&&(innerbackprop==backprop[4])&&(innerbackprop==backprop[5]))
+		{
+
+			//rnd_populate_grid(rows,cols);
+			//clearTimeout(timer2);
+			//backprop=0;
+			//document.all.msgg.innerHTML="Client session evolution has ceased.<br><a onclick='rEvolve();'>Reinitiate life game</a>";
+			"Evolving @ speed "+Math.round(tmval/100)+" total Cells=> "+liveones+" total Life => "+innerbackprop;
+			document.all.msgg.innerHTML="Evolution @ speed "+Math.round(tmval/100)+" stable with Total Cells=> "+liveones+" Total Life => "+innerbackprop;
+			//document.all.msgg.innerHTML="Client evolution.<br>"+backprop[0]+":"+backprop[1]+":"+backprop[2]+":"+backprop[3]+":"+backprop[4]+":"+backprop[5]+":"+backprop[6]+":"+backprop[7]+"<a onclick='rEvolve();'>Reinitiate life game</a>";
+			if(!tstep)timer2=setTimeout("Evolve()",tmval);
+
+		}
+		else
+		{
+			backprop.reverse();
+			backprop.pop();
+			backprop.reverse();
+			backprop.push(innerbackprop);
+		document.all.msgg.innerHTML="Evolving @ speed "+Math.round(tmval/100)+" Total Cells=> "+liveones+" Total Life => "+innerbackprop;
+		if(!tstep)timer2=setTimeout("Evolve()",tmval);
+
+		}
+
+
+}
+
+//Evolve();
+
+function stoptimer2()
+{
+clearTimeout(timer2);
+}
+function rEvolve()
+{
+//init_game();
+re_rnd_populate_grid();
+//rnd_populate_grid(rows,cols);
+//display_grid();
+//reinit=1;
+//Evolve();
+}
+function init()
+{
+	init_game();
+	rnd_populate_grid(rows,cols);
+	display_grid();
+	Evolve();
+
+}init();
+//function fuck(){alert("Fuck");}
+ // do something with xml dom
+
+</script>
+ </body>
+ </html>
