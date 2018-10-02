@@ -33675,40 +33675,12 @@ var AppRoot = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       return _react2.default.createElement(
         _Aux2.default,
         null,
         _react2.default.createElement(
           'div',
           { className: _App2.default.AppRoot },
-          _react2.default.createElement(
-            'header',
-            { className: _App2.default.App_header },
-            _react2.default.createElement(
-              'div',
-              { className: 'row' },
-              _react2.default.createElement(
-                'div',
-                { className: 'col' },
-                ' '
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'col' },
-                _react2.default.createElement(
-                  'h1',
-                  { className: _App2.default.App_title },
-                  'The Life Algorithm'
-                )
-              ),
-              _react2.default.createElement('div', { className: 'col' })
-            )
-          ),
-          _react2.default.createElement(_navBar2.default, { onClick: function onClick() {
-              return _this2.handleNavClick;
-            } }),
           _react2.default.createElement(
             'div',
             { id: 'mainPanel', className: 'px-5' },
