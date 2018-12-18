@@ -34383,7 +34383,7 @@ var World = function (_Component) {
     };
 
     _this.state = {
-      gridSize: { width: 18, height: 18 },
+      gridSize: { width: 32, height: 32 },
       cellSize: 10,
       grid: null,
       timer: null,
