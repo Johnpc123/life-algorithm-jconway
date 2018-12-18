@@ -34131,15 +34131,19 @@ var cellClass = function cellClass(cell) {
   var retval = '';
   if (cell.last) {
     if (num < 2) {
-      retval = 'lonely-grad';
+      // retval = 'lonely-grad';
+      retval = 'lonely';
     } else if (num > 3) {
-      retval = 'overcrowded-grad';
+      // retval = 'overcrowded-grad';
+      retval = 'overcrowded';
     } else {
-      retval = 'alive-grad';
+      //retval = 'alive-grad';
+      retval = 'alive';
     }
   } else {
     if (num === 3) {
-      retval = 'baby-grad';
+      //retval = 'baby-grad';
+      retval = 'baby';
     } else {
       retval = 'dead';
     }
