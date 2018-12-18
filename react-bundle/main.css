@@ -86,6 +86,9 @@
 }
 ._1RFUSceDpfaDOmPpdXx9G9 {
   background-image: radial-gradient(rgba(44, 162, 95), rgba(0, 0, 0, 0));
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
 }
 .LciOXgscJzO2oKqmfsbbC {
   background: #b2e2e2;
